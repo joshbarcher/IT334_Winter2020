@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class PriorityQueue<T extends Comparable<T>> implements IPriorityQueue<T>
 {
+    private static final double RESIZE_FACTOR = 1.5;
     private T[] heap;
     private int size;
 
@@ -54,13 +55,62 @@ public class PriorityQueue<T extends Comparable<T>> implements IPriorityQueue<T>
 
     private void resize()
     {
-        //TODO write this later...
+        //increase the size of the heap by 50%
+        int newSize = (int)(heap.length * RESIZE_FACTOR);
+        T[] newHeap = (T[])new Comparable[newSize];
+
+        //copy over elements from the old heap to the new
+        System.arraycopy(heap, 0, newHeap, 0, heap.length);
+
+        heap = newHeap;
     }
 
     @Override
     public T deleteMin()
     {
-        return null;
+        //preconditions
+        if (isEmpty())
+        {
+            throw new IllegalStateException("The heap is empty!");
+        }
+
+        //save my result
+        T minimum = heap[1];
+        heap[1] = heap[size];
+        heap[size] = null;
+
+        //reorder the heap
+        size--;
+        sink(1);
+        return minimum;
+    }
+
+    private void sink(int index)
+    {
+        //loop as long as the current element has children
+        while (index <= size / 2)
+        {
+            int left = index * 2;
+            int right = index * 2 + 1;
+
+            //search for the smaller child
+            int smallest = left;
+            if (right <= size && heap[right].compareTo(heap[left]) < 0)
+            {
+                smallest = right;
+            }
+
+            //is the current index larger than the smallest child
+            if (heap[index].compareTo(heap[smallest]) > 0)
+            {
+                swap(index, smallest);
+                index = smallest; //move the current index to the smaller child
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
     @Override
