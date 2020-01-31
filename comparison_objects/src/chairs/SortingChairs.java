@@ -19,7 +19,7 @@ public class SortingChairs
         }
 
         System.out.println();
-        Arrays.sort(chairs);
+        Arrays.sort(chairs, new ChairComparator());
 
         for (int i = 0; i < chairs.length; i++)
         {

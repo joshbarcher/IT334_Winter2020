@@ -25,7 +25,7 @@ public class Chair implements Comparable
         {
             Chair otherChair = (Chair)other;
 
-            return otherChair.numLegs - this.numLegs;
+            return material.compareTo(otherChair.material);
         }
         throw new IllegalArgumentException("Cannot compare chairs with non-chairs");
     }
