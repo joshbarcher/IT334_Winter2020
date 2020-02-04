@@ -1,6 +1,9 @@
 package divideandconquer;
 
+import utilities.SortingUtilities;
+
 import java.util.Arrays;
+import java.util.Random;
 
 public class MergeSort
 {
@@ -9,8 +12,10 @@ public class MergeSort
     public static void main(String[] args)
     {
         int[] testArray = {10, 13, 1, 2, 4, 18, 22, -10};
+        testArray = SortingUtilities.genArray(10000, 1, 10000);
         mergeSort(testArray);
         System.out.println(Arrays.toString(testArray));
+        System.out.println("Inversions? " + SortingUtilities.hasInversions(testArray));
     }
 
     public static void mergeSort(int[] array)
@@ -78,7 +83,32 @@ public class MergeSort
         //copy our merged sub-arrays from the aux array back to the original
         for (int i = 0; i < numToMerge; i++)
         {
-            array[i] =  aux[i];
+            array[low + i] =  aux[i];
         }
+    }
+
+    private static int[] genArray(int size, int min, int max)
+    {
+        Random random = new Random();
+        int[] array = new int[size];
+
+        for (int i = 0; i < array.length; i++)
+        {
+            array[i] = min + random.nextInt(max - min + 1);
+        }
+
+        return array;
+    }
+
+    private static boolean hasInversions(int[] array)
+    {
+        for (int i = 0; i < array.length - 1; i++)
+        {
+            if (array[i] > array[i + 1])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
