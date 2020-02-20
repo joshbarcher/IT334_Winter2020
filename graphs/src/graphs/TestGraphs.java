@@ -6,14 +6,27 @@ public class TestGraphs
     {
         IGraph<Character> letterGraph = new DirectedALGraph<>();
 
-        //add single elements
-        System.out.println(letterGraph.addVertex('a'));
-        System.out.println(letterGraph.addVertex('a'));
-        System.out.println(letterGraph.addVertex('c'));
+        //add single vertices
+        letterGraph.addVertex('a');
+        letterGraph.addVertex('b');
+        letterGraph.addVertex('c');
 
-        //add multiple elements
-        System.out.println(letterGraph.addVertex('d', 'g', 'f', 'g', 'h'));
+        //add multiple vertices
+        letterGraph.addVertex('d', 'e', 'f', 'g', 'h');
+
+        //add single edges
+        letterGraph.addEdge('a', 'b', 1.0);
+        letterGraph.addEdge('b', 'c', 1.0);
+        letterGraph.addEdge('c', 'b', 1.0);
+
+        //add multiple edges
+        letterGraph.addEdges(
+            new DirectedALGraph.Edge<>('d', 'c', 1.0),
+            new DirectedALGraph.Edge<>('a', 'd', 1.0),
+            new DirectedALGraph.Edge<>('b', 'f', 1.0)
+        );
 
         System.out.println(letterGraph.vertexSize());
+        System.out.println(letterGraph.edgeSize());
     }
 }
