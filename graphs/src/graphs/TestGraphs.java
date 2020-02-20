@@ -7,11 +7,13 @@ public class TestGraphs
         IGraph<Character> letterGraph = new DirectedALGraph<>();
 
         //add single elements
-        letterGraph.addVertex('a');
-        letterGraph.addVertex('b');
-        letterGraph.addVertex('c');
+        System.out.println(letterGraph.addVertex('a'));
+        System.out.println(letterGraph.addVertex('a'));
+        System.out.println(letterGraph.addVertex('c'));
 
         //add multiple elements
-        letterGraph.addVertex('d', 'e', 'f', 'g', 'h');
+        System.out.println(letterGraph.addVertex('d', 'g', 'f', 'g', 'h'));
+
+        System.out.println(letterGraph.vertexSize());
     }
 }

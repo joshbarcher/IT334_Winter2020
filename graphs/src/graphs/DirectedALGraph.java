@@ -14,43 +14,70 @@ public class DirectedALGraph<V> implements IGraph<V>
     }
 
     @Override
-    public boolean addVertex(V vertex)
+    public void addVertex(V vertex)
     {
         //precondition
-        if (adjacencyList.containsKey(vertex))
+        if (hasVertex(vertex))
         {
-            return false; //not successful
+            throw new IllegalArgumentException("Vertex is already in the graph");
         }
         else
         {
             //insert the new vertex
             adjacencyList.put(vertex, null);
-            return true;
         }
     }
 
     @Override
-    public boolean addVertex(V... vertices)
+    public void addVertex(V... vertices)
     {
-        return false;
+        for (V vertex : vertices)
+        {
+            addVertex(vertex);
+        }
     }
 
     @Override
-    public boolean addEdge(V source, V destination, double weight)
+    public void addEdge(V source, V destination, double weight)
     {
-        return false;
+        if (!hasVertex(source) || !hasVertex(destination)) //make sure both vertices exist
+        {
+            throw new IllegalArgumentException("Source or destination does not exist in graph");
+        }
+        else if (source.equals(destination)) //check for a self loop (not allowed)
+        {
+            throw new IllegalArgumentException("No self loops allowed");
+        }
+        else if (hasEdge(source, destination))
+        {
+            throw new IllegalArgumentException("Edge already exists");
+        }
+
+        Node first = adjacencyList.get(source);
+        if (first == null) //the first incident edge
+        {
+            //put the edge in the map
+            adjacencyList.put(source, new Node(destination));
+        }
+        else //place the node at the start of the linked list
+        {
+            adjacencyList.put(source, new Node(destination, first));
+        }
     }
 
     @Override
-    public boolean addEdges()
+    public void addEdges(Edge<V>... edges)
     {
-        return false;
+        for (Edge<V> edge : edges)
+        {
+            addEdge(edge.source, edge.destination, edge.weight);
+        }
     }
 
     @Override
     public boolean hasVertex(V vertex)
     {
-        return false;
+        return adjacencyList.containsKey(vertex);
     }
 
     @Override
@@ -62,7 +89,7 @@ public class DirectedALGraph<V> implements IGraph<V>
     @Override
     public int vertexSize()
     {
-        return 0;
+        return adjacencyList.size();
     }
 
     @Override
@@ -93,6 +120,60 @@ public class DirectedALGraph<V> implements IGraph<V>
     public boolean updateEdgeWeight(V source, V destination, double newWeight)
     {
         return false;
+    }
+
+    public static class Edge<V>
+    {
+        private V source;
+        private V destination;
+        private double weight;
+
+        public Edge(V source, V destination, double weight)
+        {
+            this.source = source;
+            this.destination = destination;
+            this.weight = weight;
+        }
+
+        public V getSource()
+        {
+            return source;
+        }
+
+        public void setSource(V source)
+        {
+            this.source = source;
+        }
+
+        public V getDestination()
+        {
+            return destination;
+        }
+
+        public void setDestination(V destination)
+        {
+            this.destination = destination;
+        }
+
+        public double getWeight()
+        {
+            return weight;
+        }
+
+        public void setWeight(double weight)
+        {
+            this.weight = weight;
+        }
+
+        @Override
+        public String toString()
+        {
+            return "Edge{" +
+                    "source=" + source +
+                    ", destination=" + destination +
+                    ", weight=" + weight +
+                    '}';
+        }
     }
 
     private class Node
