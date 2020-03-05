@@ -1,12 +1,11 @@
 package graphs;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class DirectedALGraph<V> implements IGraph<V>
 {
     //fields
-    private Map<V, Node> adjacencyList;
+    protected Map<V, Node> adjacencyList; //so our undirected class can see the data...
     private int edgeCount;
 
     public DirectedALGraph()
@@ -113,6 +112,64 @@ public class DirectedALGraph<V> implements IGraph<V>
         return edgeCount;
     }
 
+    public List<V> dfsOverComponents()
+    {
+        //create some helper data structures
+        List<V> results = new ArrayList<>();
+        Set<V> seen = new HashSet<>();
+
+        //loop over all vertices and try to use each vertex
+        //as a source for a dfs traversal
+        for (V vertex : adjacencyList.keySet())
+        {
+            dfs(vertex, results, seen);
+        }
+        return results;
+    }
+
+    @Override
+    public Map<V, V> shortestPath(V source)
+    {
+        return null;
+    }
+
+    public List<V> dfs(V source)
+    {
+        if (!hasVertex(source))
+        {
+            throw new IllegalArgumentException("Source vertex does not exist");
+        }
+
+        //create some helper data structures
+        List<V> results = new ArrayList<>();
+        Set<V> seen = new HashSet<>();
+
+        dfs(source, results, seen);
+        return results;
+    }
+
+    //this method will be called when we want to visit a new vertex (called current)
+    private void dfs(V current, List<V> results, Set<V> seen)
+    {
+        //check first that I haven't seen this vertex
+        if (!seen.contains(current))
+        {
+            results.add(current);
+            seen.add(current);
+
+            //check adjacent vertices
+            Node list = adjacencyList.get(current);
+            while (list != null)
+            {
+                //check the adjacent vertex
+                dfs(list.vertex, results, seen);
+
+                //move to the next
+                list = list.next;
+            }
+        }
+    }
+
     @Override
     public boolean removeVertex(V vertex)
     {
@@ -191,10 +248,11 @@ public class DirectedALGraph<V> implements IGraph<V>
         }
     }
 
-    private class Node
+    protected class Node
     {
         private V vertex;
         private Node next;
+        private double weight;
 
         public Node(V vertex)
         {
@@ -205,6 +263,49 @@ public class DirectedALGraph<V> implements IGraph<V>
         {
             this.vertex = vertex;
             this.next = next;
+        }
+
+        public Node(V vertex, double weight)
+        {
+            this.vertex = vertex;
+            this.weight = weight;
+        }
+
+        public Node(V vertex, Node next, double weight)
+        {
+            this.vertex = vertex;
+            this.next = next;
+            this.weight = weight;
+        }
+
+        public V getVertex()
+        {
+            return vertex;
+        }
+
+        public void setVertex(V vertex)
+        {
+            this.vertex = vertex;
+        }
+
+        public Node getNext()
+        {
+            return next;
+        }
+
+        public void setNext(Node next)
+        {
+            this.next = next;
+        }
+
+        public double getWeight()
+        {
+            return weight;
+        }
+
+        public void setWeight(double weight)
+        {
+            this.weight = weight;
         }
     }
 }

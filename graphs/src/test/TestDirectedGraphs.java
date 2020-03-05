@@ -1,6 +1,11 @@
-package graphs;
+package test;
 
-public class TestGraphs
+import graphs.DirectedALGraph;
+import graphs.IGraph;
+
+import java.util.List;
+
+public class TestDirectedGraphs
 {
     public static void main(String[] args)
     {
@@ -21,12 +26,30 @@ public class TestGraphs
 
         //add multiple edges
         letterGraph.addEdges(
+            new DirectedALGraph.Edge<>('a', 'g', 1.0),
             new DirectedALGraph.Edge<>('d', 'c', 1.0),
             new DirectedALGraph.Edge<>('a', 'd', 1.0),
-            new DirectedALGraph.Edge<>('b', 'f', 1.0)
+            new DirectedALGraph.Edge<>('b', 'f', 1.0),
+            new DirectedALGraph.Edge<>('f', 'e', 1.0),
+            new DirectedALGraph.Edge<>('e', 'g', 1.0),
+            new DirectedALGraph.Edge<>('g', 'f', 1.0)
         );
 
         System.out.println(letterGraph.vertexSize());
         System.out.println(letterGraph.edgeSize());
+
+        //test dfs() and see if it works...
+        List<Character> dfs = letterGraph.dfsOverComponents();
+        for (char character : dfs)
+        {
+            System.out.println(character);
+        }
     }
 }
+
+
+
+
+
+
+
