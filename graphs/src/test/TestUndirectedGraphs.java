@@ -3,6 +3,8 @@ package test;
 import graphs.DirectedALGraph;
 import graphs.UndirectedALGraph;
 
+import java.util.List;
+
 public class TestUndirectedGraphs
 {
     public static void main(String[] args)
@@ -11,14 +13,21 @@ public class TestUndirectedGraphs
 
         numGraph.addVertex(1, 2,3, 4, 5);
         numGraph.addEdges(
-            new DirectedALGraph.Edge<>(1, 2, 0),
-            new DirectedALGraph.Edge<>(2, 3, 0),
-            new DirectedALGraph.Edge<>(2, 4, 0),
-            new DirectedALGraph.Edge<>(1, 4, 0),
-            new DirectedALGraph.Edge<>(2, 5, 0)
+            new DirectedALGraph.Edge<>(1, 2, 1),
+            new DirectedALGraph.Edge<>(2, 3, 3),
+            new DirectedALGraph.Edge<>(2, 4, 2),
+            new DirectedALGraph.Edge<>(1, 4, 1),
+            new DirectedALGraph.Edge<>(2, 5, 2),
+            new DirectedALGraph.Edge<>(3, 4, 1)
         );
 
         System.out.println("Vertex set size: " + numGraph.vertexSize());
         System.out.println("Edge set size: " + numGraph.edgeSize());
+
+        List<DirectedALGraph.Edge<Integer>> mst = numGraph.mst(1);
+        for (DirectedALGraph.Edge<Integer> edge : mst)
+        {
+            System.out.println(edge);
+        }
     }
 }

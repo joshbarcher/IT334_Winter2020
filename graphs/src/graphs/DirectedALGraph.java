@@ -57,11 +57,11 @@ public class DirectedALGraph<V> implements IGraph<V>
         if (first == null) //the first incident edge
         {
             //put the edge in the map
-            adjacencyList.put(source, new Node(destination));
+            adjacencyList.put(source, new Node(destination, weight));
         }
         else //place the node at the start of the linked list
         {
-            adjacencyList.put(source, new Node(destination, first));
+            adjacencyList.put(source, new Node(destination, first, weight));
         }
         edgeCount++;
     }
@@ -194,7 +194,7 @@ public class DirectedALGraph<V> implements IGraph<V>
         return false;
     }
 
-    public static class Edge<V>
+    public static class Edge<V> implements Comparable<Edge<V>>
     {
         private V source;
         private V destination;
@@ -205,6 +205,23 @@ public class DirectedALGraph<V> implements IGraph<V>
             this.source = source;
             this.destination = destination;
             this.weight = weight;
+        }
+
+        @Override
+        public int compareTo(Edge<V> otherEdge)
+        {
+            if (weight == otherEdge.weight)
+            {
+                return 0;
+            }
+            else if (weight < otherEdge.weight)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
         }
 
         public V getSource()
